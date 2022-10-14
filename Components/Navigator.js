@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 export function AuthNaviator(){
     return(
         <Stack.Navigator initialRouteName="Intro">
-            <Stack.Screen name="HomeScreen" component={HomeScreen}  options={{ title:'Todos',statusBarColor:'green' }}/>
+            <Stack.Screen name="HomeScreen" component={HomeScreen}/>
             <Stack.Screen name="Intro" component={Intro} options={{ headerShown: false}}/>
         </Stack.Navigator>
     );

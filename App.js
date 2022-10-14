@@ -1,11 +1,17 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Intro } from './Screens/Intro';
+// import { AuthNaviator } from './Components/Navigator';
+import { HomeScreen } from './Screens/HomeScreen';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Intro />
+      <NavigationContainer>
+        {/* <AuthNaviator /> */}
+      </NavigationContainer>
+      <HomeScreen />
     </View>
   );
 }
