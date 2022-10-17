@@ -13,7 +13,7 @@ export function HomeScreen() {
                     <Image style={styles.logo} source={{ uri: 'https://cdn-icons-png.flaticon.com/128/8688/8688199.png' }} />
                 </View>
                 <View style={{ flexDirection: 'row', }}>
-                    <TextInput placeholder='Search Words' style={styles.search} />
+                    <TextInput placeholder='Search Words' style={styles.search} onFocus={true} />
                     <TouchableOpacity style={styles.searchIcon}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="#3b5998" />
                     </TouchableOpacity>
