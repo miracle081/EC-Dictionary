@@ -5,14 +5,13 @@ import { faBook, faMagnifyingGlass, faCalendarDays, faClockRotateLeft, faShuffle
 import { faEllipsisH, faPalette } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components/native';
 import MarqueeText from 'react-native-marquee';
-import { Button } from 'react-native-paper';
+import { randomWords } from '../Components/RandomWords';
 
 export function HomeScreen({ navigation }) {
     const [theme1, setTheme1] = useState('#FB2576');
     const [theme2, setTheme2] = useState('#372948');
 
     const [search, setSearch] = useState('');
-    const [searchBtn, setSearchBtn] = useState('true');
 
     const Grid = styled.View`
         display: grid;
@@ -32,9 +31,6 @@ export function HomeScreen({ navigation }) {
         background-image: linear-gradient(140deg, #FB2576, #372948 60% );
         color: white;
         top:50%;
-    `;
-    const Marquee = styled.Text`
-        background-image: linear-gradient(140deg, ${theme1}, ${theme2} 60% );
     `;
 
     function pallet(color) {
@@ -81,6 +77,12 @@ export function HomeScreen({ navigation }) {
         }
     }
 
+    let index = null
+    setInterval(() => {
+        index = Math.ceil(Math.random() * 10 - 1);
+    }, 400);
+
+
 
     return (
         <View style={styles.container}>
@@ -92,7 +94,7 @@ export function HomeScreen({ navigation }) {
                 <View style={{ flexDirection: 'row', }}>
                     <TextInput placeholder='Search Words' style={styles.search}
                         onChangeText={(w) => setSearch(w)}
-                    />
+                    /> 
                     {check(search)}
                 </View>
             </View>
@@ -115,7 +117,11 @@ export function HomeScreen({ navigation }) {
                     <Text style={styles.mainText}>Word of the day</Text>
                 </Bg>
 
-                <Bg style={styles.list}>
+                <Bg style={styles.list}
+                    onPress={() => {
+                        navigation.navigate('Result', { wordSearch: randomWords[index] })
+                    }}
+                >
                     <FontAwesomeIcon icon={faShuffle} size={50} color="#fff" />
                     <Text style={styles.mainText}>Random Words</Text>
                 </Bg>
@@ -197,16 +203,13 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     mainText: {
-        fontWeight: 500,
         fontSize: 25,
         marginTop: 12,
-        fontFamily: 'arial',
         color: 'white'
     },
     mark: {
         color: 'white',
         fontSize: 22,
-        fontFamily: 'arial',
         padding: 5,
         textTransform: 'capitalize',
         // fontStyle:'italic',
@@ -216,7 +219,7 @@ const styles = StyleSheet.create({
         marginTop: 4
     },
     themeBtn: {
-        width: "fit-content", color: 'white', padding: 15, borderRadius: 50,
+        width: 50, color: 'white', padding: 15, borderRadius: 50,
         position: 'absolute',
         top: '100%',
         right: 10,

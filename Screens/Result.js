@@ -4,50 +4,46 @@ import { Searchbar } from 'react-native-paper';
 
 
 export function Result({ navigation, route }) {
-    // const { wordSearch } = route.params;
+    const { wordSearch } = route.params;
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [whole, setWhole] = useState([]);
     const [noWord, setNoWord] = useState('');
 
     const onChangeSearch = query => setSearchQuery(query);
 
-    function show() {
+    const [whole, setWhole] = useState([]);
+    function show(search) {
         const dictionaryapis = async () => {
-            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/miracle`);
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${search}`);
             const data = await response.json();
             return data
         }
         dictionaryapis()
             .then(returned => {
-                let word = returned[0].meanings[0].definitions;
-                let means = []
-                // console.log(word);
-                word.forEach(element => {
-                    means.push(element)
-                });
-                setWhole(means);
-                
+                let word = returned[0].meanings[0].definitions[0].definition;
+                setWhole(word);
             })
             .catch(() => {
                 setNoWord("word not Found")
-            });
+            })
     };
-    // show(wordSearch);
-    show();
-    
+    show(wordSearch);
 
     return (
         <View style={styles.con}>
-            {/* <Searchbar
+            <Searchbar
                 placeholder="Search word"
                 onChangeText={onChangeSearch}
                 value={searchQuery}
                 onSubmitEditing={() => navigation.navigate('Result', { wordSearch: searchQuery })}
-            /> */}
-            {
-                whole
-            }
+            />
+
+            <View>
+                <Text>{wordSearch}</Text>
+            </View>
+
+            <Text>{whole}</Text>
+
             {
                 noWord
             }

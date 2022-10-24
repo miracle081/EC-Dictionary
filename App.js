@@ -3,18 +3,19 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { AuthNaviator } from './Components/Navigator';
 import { Result } from './Screens/Result';
+import { HomeScreen } from './Screens/HomeScreen';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        {/* <AuthNaviator /> */}
+        <AuthNaviator />
       </NavigationContainer>
-      {/* <Result /> */}
+      {/* <HomeScreen /> */}
     </View>
   );
 }
-
+  
 const styles = StyleSheet.create({
   container: {
     flex: 1,
