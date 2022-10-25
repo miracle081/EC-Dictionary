@@ -10,8 +10,8 @@ background-image: linear-gradient(140deg, #FB2576, #372948 60% );
 
 export function Intro({ navigation }) {
     return (
-        <Bg style={styles.container}>
-            <View style={{ flexDirection: 'row', gap: 5 }}>
+        <View style={styles.container}>
+            <View style={{ flexDirection: 'row', marginBottom:30 }}>
                 <FontAwesomeIcon icon={faBook} size={40} color="white" />
                 <Text style={styles.header}>EC Dictionary</Text>
             </View>
@@ -23,7 +23,7 @@ export function Intro({ navigation }) {
             >
                 Search for words
             </Button>
-        </Bg>
+        </View>
     );
 }
 
@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#FF731D',
-        gap: 20,
+        backgroundColor: '#372948',
     },
     header: {
         textAlign: 'center',

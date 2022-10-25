@@ -1,68 +1,21 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBook, faMagnifyingGlass, faCalendarDays, faClockRotateLeft, faShuffle, faInfoCircle, faSmileBeam, } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsisH, faPalette } from '@fortawesome/free-solid-svg-icons';
-import styled from 'styled-components/native';
 import MarqueeText from 'react-native-marquee';
 import { randomWords } from '../Components/RandomWords';
 
 export function HomeScreen({ navigation }) {
-    const [theme1, setTheme1] = useState('#FB2576');
-    const [theme2, setTheme2] = useState('#372948');
 
     const [search, setSearch] = useState('');
 
-    const Grid = styled.View`
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap:3px;
-    `;
-
-    const Bg = styled.TouchableOpacity`
-        background-image: linear-gradient(140deg, ${theme1}, ${theme2} 60% );
-        color: white;
-    `;
-    const Bg2 = styled.TouchableOpacity`
-        background-image: linear-gradient(140deg, #3C4048, #181818 60% );
-        color: white;
-    `;
-    const Bg3 = styled.TouchableOpacity`
-        background-image: linear-gradient(140deg, #FB2576, #372948 60% );
-        color: white;
-        top:50%;
-    `;
-
-    function pallet(color) {
-        if (color == "#FB2576") {
-            return (
-                <Bg2 style={styles.themeBtn} onPress={() => {
-                    setTheme1('#3C4048');
-                    setTheme2('#181818');
-                }
-                }>
-                    <FontAwesomeIcon icon={faPalette} size={30} color="#fff" />
-                </Bg2>
-            )
-        }
-        else {
-            return (
-                <Bg3 style={styles.themeBtn} onPress={() => {
-                    setTheme1('#FB2576');
-                    setTheme2('#372948');
-                }
-                }>
-                    <FontAwesomeIcon icon={faPalette} size={30} color="#fff" />
-                </Bg3>
-            )
-        }
-    }
 
     function check(input) {
         if (input == "") {
             return (
                 <TouchableOpacity style={styles.searchIcon} disabled={true}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color={theme1} />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="#372948" />
                 </TouchableOpacity>
             )
         }
@@ -71,83 +24,99 @@ export function HomeScreen({ navigation }) {
                 <TouchableOpacity style={styles.searchIcon} onPress={() => {
                     navigation.navigate('Result', { wordSearch: search })
                 }}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color={theme1} />
+                    <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="#372948" />
                 </TouchableOpacity>
             )
         }
     }
 
-    let index = null
+    let index = 0
     setInterval(() => {
         index = Math.ceil(Math.random() * 10 - 1);
     }, 400);
 
+    const now = new Date();
+    let hr = now.getHours();
+
+    let dayWords = Math.ceil(Math.random() * 10 - 1)
+    if (hr >= 0) {
+        setInterval(() => {
+            dayWords = Math.ceil(Math.random() * 10 - 1);
+        }, 86400000);
+
+    }
 
 
     return (
         <View style={styles.container}>
             {/* ======= Nav Bar ====== */}
-            <View style={[{ backgroundColor: theme2 }, styles.nav]}>
+            <View style={[{ backgroundColor: "#372948" }, styles.nav]}>
                 <View style={{ flexDirection: 'row', gap: 3 }}>
                     <Image style={styles.logo} source={{ uri: 'https://cdn-icons-png.flaticon.com/128/8688/8688199.png' }} />
                 </View>
                 <View style={{ flexDirection: 'row', }}>
                     <TextInput placeholder='Search Words' style={styles.search}
                         onChangeText={(w) => setSearch(w)}
-                    /> 
+                        placeholderTextColor="white"
+                        clearTextOnFocus
+                    />
                     {check(search)}
                 </View>
             </View>
-            <Bg style={styles.gbMark}>
-                <MarqueeText
-                    style={styles.mark}
-                    speed={0.2}
-                    marqueeOnStart={true}
-                    loop={true}
-                    delay={100}
-                >
-                    <FontAwesomeIcon icon={faSmileBeam} size={23} color="#fff" />
-                    <Text> </Text> Welcome to Eealy Code (EC) Dictionary. A place of knowledge
-                    <Text> </Text><FontAwesomeIcon icon={faSmileBeam} size={23} color="#fff" />
-                </MarqueeText>
-            </Bg>
-            <Grid style={styles.main}>
-                <Bg style={styles.list}>
-                    <FontAwesomeIcon icon={faCalendarDays} size={50} color="#fff" />
-                    <Text style={styles.mainText}>Word of the day</Text>
-                </Bg>
+            <ScrollView>
+                <View style={styles.gbMark}>
+                    <MarqueeText
+                        style={styles.mark}
+                        speed={0.2}
+                        marqueeOnStart={true}
+                        loop={true}
+                        delay={100}
+                    >
+                        Welcome to Eealy Code (EC) Dictionary. A place of knowledge
+                    </MarqueeText>
+                </View>
+                <View style={{ margin: 10 }}>
 
-                <Bg style={styles.list}
-                    onPress={() => {
-                        navigation.navigate('Result', { wordSearch: randomWords[index] })
-                    }}
-                >
-                    <FontAwesomeIcon icon={faShuffle} size={50} color="#fff" />
-                    <Text style={styles.mainText}>Random Words</Text>
-                </Bg>
+                    <View style={styles.main}>
 
-                <Bg style={styles.list}>
-                    <FontAwesomeIcon icon={faClockRotateLeft} size={50} color="#fff" />
-                    <Text style={styles.mainText}>History</Text>
-                </Bg>
+                        <TouchableOpacity style={styles.list}
+                            onPress={() => {
+                                navigation.navigate('Result', { wordSearch: randomWords[dayWords] })
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCalendarDays} size={50} color="#372948" />
+                            <Text style={styles.mainText}>Word of the day</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.list}
+                            onPress={() => {
+                                navigation.navigate('Result', { wordSearch: randomWords[index] })
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faShuffle} size={50} color="#372948" />
+                            <Text style={styles.mainText}>Random Words</Text>
+                        </TouchableOpacity>
 
-                <Bg style={styles.list}>
-                    <FontAwesomeIcon icon={faEllipsisH} size={50} color="#fff" />
-                    <Text style={styles.mainText}>Get more EC apps</Text>
-                </Bg>
+                    </View>
+                    <View style={styles.main}>
+                        <TouchableOpacity style={styles.list}>
+                            <FontAwesomeIcon icon={faClockRotateLeft} size={50} color="#372948" />
+                            <Text style={styles.mainText}>History</Text>
+                        </TouchableOpacity>
 
-                <Bg style={styles.list}>
-                    <FontAwesomeIcon icon={faInfoCircle} size={50} color="#fff" />
-                    <Text style={styles.mainText}>Help</Text>
-                </Bg>
+                        <TouchableOpacity style={styles.list}>
+                            <FontAwesomeIcon icon={faEllipsisH} size={50} color="#372948" />
+                            <Text style={styles.mainText}>Get more EC apps</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.main}>
+                        <TouchableOpacity style={styles.list}>
+                            <FontAwesomeIcon icon={faInfoCircle} size={50} color="#372948" />
+                            <Text style={styles.mainText}>Help</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
-
-            </Grid>
-            {
-                pallet(theme1)
-            }
-
-
+            </ScrollView>
         </View>
     )
 }
@@ -177,7 +146,8 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 15,
         letterSpacing: 1,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        width: 200
     },
     searchIcon: {
         backgroundColor: 'white',
@@ -189,39 +159,37 @@ const styles = StyleSheet.create({
     },
     list: {
         alignItems: 'center',
-        textAlign: 'center',
-        gap: 10,
-        borderBottomColor: '#3b5998',
-        borderBottomWidth: 2,
-        backgroundColor: '#3b5998',
+        // backgroundColor: '#372948',
         justifyContent: 'center',
         padding: 10,
-        height: 140
+        height: 140,
+        width: '49%',
+        margin: 2,
+        borderColor: '#372948',
+        borderWidth: 2,
+        borderRadius: 40,
     },
     main: {
-        margin: 3,
-        marginTop: 3,
+        flexDirection: 'row',
     },
     mainText: {
-        fontSize: 25,
+        fontSize: 18,
         marginTop: 12,
-        color: 'white'
+        color: '#372948',
+        fontWeight: 'bold',
+        textTransform: 'capitalize'
     },
     mark: {
         color: 'white',
-        fontSize: 22,
+        fontSize: 18,
         padding: 5,
         textTransform: 'capitalize',
-        // fontStyle:'italic',
-        paddingStart: 10
+        fontStyle: 'italic',
+        paddingStart: 10,
     },
     gbMark: {
-        marginTop: 4
+        marginVertical: 3,
+        backgroundColor: '#372948',
+        color: 'black'
     },
-    themeBtn: {
-        width: 50, color: 'white', padding: 15, borderRadius: 50,
-        position: 'absolute',
-        top: '100%',
-        right: 10,
-    }
 })
