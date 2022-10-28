@@ -4,15 +4,15 @@ import { Searchbar } from 'react-native-paper';
 
 
 export function Result({ navigation, route }) {
+    
     const { wordSearch } = route.params;
-
     const [searchQuery, setSearchQuery] = useState('');
     const [noWord, setNoWord] = useState('');
     const [wordColor, setColor] = useState('#372948');
+    const [whole, setWhole] = useState([]);
 
     const onChangeSearch = query => setSearchQuery(query);
 
-    const [whole, setWhole] = useState([]);
     let visible = true
     if (whole == null) {
         

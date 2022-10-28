@@ -19,7 +19,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
-    marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : null
+    // backgroundColor: '#372948',
+    paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : null
   },
 });

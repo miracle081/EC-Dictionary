@@ -1,17 +1,52 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBook, faMagnifyingGlass, faCalendarDays, faClockRotateLeft, faShuffle, faInfoCircle, faSmileBeam, } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsisH, faPalette } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faMagnifyingGlass, faCalendarDays, faClockRotateLeft, faShuffle, faInfoCircle, } from '@fortawesome/free-solid-svg-icons';
 import MarqueeText from 'react-native-marquee';
 import { randomWords } from '../Components/RandomWords';
+import { db } from '../services/firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 export function HomeScreen({ navigation }) {
 
     const [search, setSearch] = useState('');
 
+    function add() {
+        const now = new Date();
+        let hr = now.getHours();
+        let min = now.getMinutes();
+        let day = now.getDate();
+        let mon = now.getMonth();
+        let yr = now.getFullYear();
+        let amp = "am";
+        
+        if (min.lenght == 1) {
+            min = `0${min}`;
+        }
+        if (hr > 12) {
+            hr = hr - 12;
+            amp = "pm";
+        }
+        const savedate = `${day}/${mon}/${yr} ~ ${hr}:${min} ${amp}`;
 
-    function check(input) {
+        addDoc(collection(db, 'histories'), {
+            word: search,
+            date: savedate,
+        })
+            .then(() => {
+                navigation.navigate('Result', { wordSearch: search })
+            })
+            .catch(() => {
+                Alert.alert(
+                    'Error',
+                    'Please check your network connectivity and try again.',
+                    [{ text: 'Ok' }]
+                )
+            })
+    }
+
+    function check(input, dataB) {
         if (input == "") {
             return (
                 <TouchableOpacity style={styles.searchIcon} disabled={true}>
@@ -21,9 +56,7 @@ export function HomeScreen({ navigation }) {
         }
         else {
             return (
-                <TouchableOpacity style={styles.searchIcon} onPress={() => {
-                    navigation.navigate('Result', { wordSearch: search })
-                }}>
+                <TouchableOpacity style={styles.searchIcon} onPress={dataB}>
                     <FontAwesomeIcon icon={faMagnifyingGlass} size={25} color="#372948" />
                 </TouchableOpacity>
             )
@@ -58,9 +91,10 @@ export function HomeScreen({ navigation }) {
                     <TextInput placeholder='Search Words' style={styles.search}
                         onChangeText={(w) => setSearch(w)}
                         placeholderTextColor="white"
-                        clearTextOnFocus
+                        clearTextOnFocus={true}
+                        onSubmitEditing={add}
                     />
-                    {check(search)}
+                    {check(search, add)}
                 </View>
             </View>
             <ScrollView>
@@ -98,18 +132,28 @@ export function HomeScreen({ navigation }) {
 
                     </View>
                     <View style={styles.main}>
-                        <TouchableOpacity style={styles.list}>
+                        <TouchableOpacity style={styles.list}
+                            onPress={() => {
+                                navigation.navigate('History')
+                            }}
+                        >
                             <FontAwesomeIcon icon={faClockRotateLeft} size={50} color="#372948" />
                             <Text style={styles.mainText}>History</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.list}>
-                            <FontAwesomeIcon icon={faEllipsisH} size={50} color="#372948" />
+                        <TouchableOpacity style={styles.list} onPress={() =>
+                            Alert.alert(
+                                'More Apps',
+                                'Please Login to get more EC apps',
+                                [{ text: 'Ok' }]
+                            )
+                        }>
+                            <FontAwesomeIcon icon={faGooglePlay} size={50} color="#372948" />
                             <Text style={styles.mainText}>Get more EC apps</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.main}>
-                        <TouchableOpacity style={styles.list}>
+                        <TouchableOpacity style={styles.list} onPress={() => navigation.navigate("Help")}>
                             <FontAwesomeIcon icon={faInfoCircle} size={50} color="#372948" />
                             <Text style={styles.mainText}>Help</Text>
                         </TouchableOpacity>
@@ -142,6 +186,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 50,
         borderBottomLeftRadius: 50,
         padding: 10,
+        paddingVertical: 0,
         borderWidth: 2,
         color: 'white',
         fontSize: 15,

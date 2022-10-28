@@ -1,12 +1,12 @@
 export let randomWords = [
     "obelize",
     "Time",
-    "Psychotomimetic",
+    "Procrastination",
     "umpteenth",
     "headspace",
     "greatest",
     "Mathematics",
-    "finished",
+    "Commitment",
     "Glorious",
     "generation",
 ]
