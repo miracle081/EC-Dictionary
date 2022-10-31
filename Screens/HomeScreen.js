@@ -20,8 +20,8 @@ export function HomeScreen({ navigation }) {
         let mon = now.getMonth();
         let yr = now.getFullYear();
         let amp = "am";
-        
-        if (min.lenght == 1) {
+
+        if (min.lenght === 1) {
             min = `0${min}`;
         }
         if (hr > 12) {
@@ -97,7 +97,7 @@ export function HomeScreen({ navigation }) {
                     {check(search, add)}
                 </View>
             </View>
-            <ScrollView>
+            <ScrollView> 
                 <View style={styles.gbMark}>
                     <MarqueeText
                         style={styles.mark}
@@ -106,7 +106,7 @@ export function HomeScreen({ navigation }) {
                         loop={true}
                         delay={100}
                     >
-                        Welcome to Eealy Code (EC) Dictionary. A place of knowledge
+                        Welcome to Early Code (EC) Dictionary. A place of knowledge
                     </MarqueeText>
                 </View>
                 <View style={{ margin: 10 }}>
@@ -144,11 +144,11 @@ export function HomeScreen({ navigation }) {
                         <TouchableOpacity style={styles.list} onPress={() =>
                             Alert.alert(
                                 'More Apps',
-                                'Please Login to get more EC apps',
-                                [{ text: 'Ok' }]
+                                'Sorry, this fuction is not available yet. Working in progress...',
+                                [{ text: 'Okay' }]
                             )
                         }>
-                            <FontAwesomeIcon icon={faGooglePlay} size={50} color="#372948" />
+                            <FontAwesomeIcon icon={faGooglePlay} size={50} color="#FD841F" />
                             <Text style={styles.mainText}>Get more EC apps</Text>
                         </TouchableOpacity>
                     </View>

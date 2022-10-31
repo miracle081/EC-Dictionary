@@ -9,9 +9,9 @@ export function Help({ navigation }) {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={[{width:140},styles.view]}>
-                <Text style={styles.header}>Home</Text>
+            <View style={[{ width: 140 }, styles.view]}>
                 <FontAwesomeIcon icon={faHomeAlt} style={styles.icon} size={23} />
+                <Text style={styles.header}>Home</Text>
             </View>
             <Text style={styles.text}>The initial page of the dictionary shows the icons related to common features:</Text>
             <View style={styles.ul}>
@@ -40,13 +40,24 @@ export function Help({ navigation }) {
                     <Text style={styles.liContents}>Help</Text>
                 </View>
             </View>
-            <Image style={styles.page} source={require("../assets/page.png")}/>
+            <Image style={styles.page} source={require("../assets/page.png")} />
 
-            <View style={[{width:250},styles.view]}>
-                <Text style={styles.header}>How to search</Text>
+            <View style={[{ width: 250, marginTop:15, }, styles.view]}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} style={styles.icon} size={23} />
+                <Text style={styles.header}>How to search</Text>
             </View>
-            <Text style={styles.text}>The initial page of the dictionary shows the icons related to common features:</Text>
+            <Text style={styles.text}>
+                The top bar contians the search icon and main menu. By touching the search box you can get the software keyboard: here you can start to search words.
+            </Text>
+
+            <View style={[{ width: 150, marginTop:15, }, styles.view]}>
+                <FontAwesomeIcon icon={faClockRotateLeft} style={styles.icon} size={23} />
+                <Text style={styles.header}>History</Text>
+            </View>
+            <Text style={styles.text}>
+                This panel contians the most recent searched words. You can select one recent word, sort the list based on chronological order, 
+            </Text>
+            <Image style={[{ marginTop:15, }, styles.page]} source={require("../assets/his.png")} />
         </ScrollView>
     );
 }
@@ -61,41 +72,41 @@ const styles = StyleSheet.create({
         borderBottomColor: 'red',
         borderBottomWidth: 2,
         padding: 5,
-        alignItems:'center'
+        alignItems: 'center'
     },
     header: {
         fontSize: 25,
         fontWeight: 'bold',
-        paddingRight:5
+        paddingLeft: 5
     },
-    icon:{
-        paddingLeft:20
+    icon: {
+        paddingLeft: 20
     },
-    text:{
-        fontSize:18,
-        marginTop:10,
-        paddingStart:5
+    text: {
+        fontSize: 18,
+        marginTop: 10,
+        paddingStart: 5
     },
-    ul:{
-        backgroundColor:'#D8D8D8',
-        borderRadius:20,
-        padding:15,
-        margin:15
+    ul: {
+        backgroundColor: '#D8D8D8',
+        borderRadius: 20,
+        padding: 15,
+        margin: 15
     },
-    li:{
-        flexDirection:'row',
-        marginVertical:5,
-        alignItems:"center"
+    li: {
+        flexDirection: 'row',
+        marginVertical: 5,
+        alignItems: "center"
     },
-    liContents:{
-        fontSize:18
+    liContents: {
+        fontSize: 18
     },
-    page:{
-        height:350,
-        width:"60%",
-        marginHorizontal:60,
-        borderRadius:10,
-        borderColor:'red',
-        borderWidth:1
+    page: {
+        height: 350,
+        width: "60%",
+        marginHorizontal: 60,
+        borderRadius: 10,
+        borderColor: 'red',
+        borderWidth: 1
     }
 });

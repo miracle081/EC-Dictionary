@@ -25,9 +25,7 @@ export function History({ navigation }) {
     function deleteSearch (wordId) {
         //delete a search
         deleteDoc(doc(db, "histories", `${wordId}`))
-        .then(() => {
-            navigation.navigate('History')
-        })
+        .then()
         .catch(() => {
             Alert.alert(
                 'Error',
@@ -38,7 +36,7 @@ export function History({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            <FlatList data={search} renderItem={({ item }) => {
+            <FlatList showsVerticalScrollIndicator data={search} renderItem={({ item }) => {
                 return (
                     <TouchableOpacity style={styles.main}
                         onPress={() => {
