@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-
+import { db } from '../services/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 export function Result({ navigation, route }) {
     
@@ -18,6 +19,40 @@ export function Result({ navigation, route }) {
         
     }
     const [wordPhonetic, setPhonetic] = useState([]);
+    function add() {
+        const now = new Date();
+        let hr = now.getHours();
+        let min = now.getMinutes();
+        let day = now.getDate();
+        let mon = now.getMonth();
+        let yr = now.getFullYear();
+        let amp = "am";
+
+        if (min.lenght === 1) {
+            min = `0${min}`;
+        }
+        
+        if (hr > 12) {
+            hr = hr - 12;
+            amp = "pm";
+        }
+        const savedate = `${day}/${mon}/${yr} ~ ${hr}:${min} ${amp}`;
+
+        addDoc(collection(db, 'histories'), {
+            word: searchQuery,
+            date: savedate,
+        })
+            .then(() => {
+                navigation.navigate('Result', { wordSearch:  searchQuery})
+            })
+            .catch(() => {
+                Alert.alert(
+                    'Error',
+                    'Please check your network connectivity and try again.',
+                    [{ text: 'Ok'}]
+                )
+            })
+    }
 
     function show(search) {
         const dictionaryapis = async () => {
@@ -41,13 +76,15 @@ export function Result({ navigation, route }) {
     };
     show(wordSearch);
 
+
+
     return (
         <View style={styles.con}>
             <Searchbar
                 placeholder="Search word"
                 onChangeText={onChangeSearch}
                 value={searchQuery}
-                onSubmitEditing={() => navigation.navigate('Result', { wordSearch: searchQuery })}
+                onSubmitEditing={add}
             />
 
             <ScrollView horizontal style={styles.wordHeader}>

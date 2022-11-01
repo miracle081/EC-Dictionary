@@ -12,18 +12,19 @@ export function HomeScreen({ navigation }) {
 
     const [search, setSearch] = useState('');
 
-    function add() {
+    function add(item) {
         const now = new Date();
         let hr = now.getHours();
         let min = now.getMinutes();
         let day = now.getDate();
-        let mon = now.getMonth();
+        let mon = now.getMonth() + 1;
         let yr = now.getFullYear();
         let amp = "am";
 
         if (min.lenght === 1) {
             min = `0${min}`;
         }
+        
         if (hr > 12) {
             hr = hr - 12;
             amp = "pm";
@@ -31,7 +32,7 @@ export function HomeScreen({ navigation }) {
         const savedate = `${day}/${mon}/${yr} ~ ${hr}:${min} ${amp}`;
 
         addDoc(collection(db, 'histories'), {
-            word: search,
+            word: item,
             date: savedate,
         })
             .then(() => {
@@ -41,7 +42,7 @@ export function HomeScreen({ navigation }) {
                 Alert.alert(
                     'Error',
                     'Please check your network connectivity and try again.',
-                    [{ text: 'Ok' }]
+                    [{ text: 'Ok'}]
                 )
             })
     }
@@ -68,6 +69,8 @@ export function HomeScreen({ navigation }) {
         index = Math.ceil(Math.random() * 10 - 1);
     }, 400);
 
+    let agument = randomWords[index]
+
     const now = new Date();
     let hr = now.getHours();
 
@@ -92,9 +95,9 @@ export function HomeScreen({ navigation }) {
                         onChangeText={(w) => setSearch(w)}
                         placeholderTextColor="white"
                         clearTextOnFocus={true}
-                        onSubmitEditing={add}
+                        onSubmitEditing={()=>add(search)}
                     />
-                    {check(search, add)}
+                    {check(search, ()=>add(search))}
                 </View>
             </View>
             <ScrollView> 
@@ -122,9 +125,7 @@ export function HomeScreen({ navigation }) {
                             <Text style={styles.mainText}>Word of the day</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.list}
-                            onPress={() => {
-                                navigation.navigate('Result', { wordSearch: randomWords[index] })
-                            }}
+                            onPress={add(agument)}
                         >
                             <FontAwesomeIcon icon={faShuffle} size={50} color="#372948" />
                             <Text style={styles.mainText}>Random Words</Text>
@@ -145,7 +146,8 @@ export function HomeScreen({ navigation }) {
                             Alert.alert(
                                 'More Apps',
                                 'Sorry, this fuction is not available yet. Working in progress...',
-                                [{ text: 'Okay' }]
+                                [{ text: 'Okay',}],
+                                [{ text: 'Go to Intro',}],
                             )
                         }>
                             <FontAwesomeIcon icon={faGooglePlay} size={50} color="#FD841F" />
