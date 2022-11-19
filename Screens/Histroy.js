@@ -7,7 +7,7 @@ import { db } from '../services/firebase';
 import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 
 export function History({ navigation }) {
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(''); 
 
     useEffect(() => {
         onSnapshot(collection(db, 'histories'), (querySnapshot) => {
@@ -30,7 +30,7 @@ export function History({ navigation }) {
             Alert.alert(
                 'Error',
                 'An error occored. Please try again.',
-                [{text:'Accept',onPress:() => navigation.navigate('Home')}]
+                [{text:'Ok'}]
             )
         })
     }

@@ -125,7 +125,7 @@ export function HomeScreen({ navigation }) {
                             <Text style={styles.mainText}>Word of the day</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.list}
-                            onPress={()=>navigation.navigate('Result', { wordSearch: agument })}
+                            onPress={()=>navigation.navigate('Result', { wordSearch: randomWords[index] })}
                         >
                             <FontAwesomeIcon icon={faShuffle} size={50} color="#372948" />
                             <Text style={styles.mainText}>Random Words</Text>
