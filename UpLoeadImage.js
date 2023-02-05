@@ -6,7 +6,7 @@ import * as ImagePicer from "expo-image-picker";
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { firebase} from "./services/firebase2"
 
-export function Upload({ navigation }) {
+export function Upload() {
 
     const [image, setImage] = useState(null);
     const [upleading, setUploading] = useState(false);

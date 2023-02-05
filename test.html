@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/bootstrap5.min.css">
+</head>
+
+<body>
+
+    <!-- <script src="https://crypto.com/price/static/widget/index.js"></script> 
+    <div id="crypto-widget-CoinBlocks" data-transparent="true" data-design="modern" data-coin-ids="1"></div> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script>
+        const getBTCRequest = async () => {
+            const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true&include_last_updated_at=true";
+            try{
+                let timestamp,time,price;
+                const { data } = await axios.get(url)
+                const current = 10 /data.bitcoin;
+                time =  Math.floor(new Date().getTime() / 1000)
+                timestamp = time - data.bitcoin.last_updated_at
+                timestamp = Math.floor(timestamp / 60);
+                price = 10 / data.bitcoin.usd;
+                price = Number(price).toFixed(6)
+                console.log('Last Updated: ',`${timestamp < 1? 1 : timestamp} mins ago, Price is $ ${price}`)
+                console.log(data);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        const getETHRequest = async () => {
+            const url = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd&include_market_cap=true&include_last_updated_at=true";
+            try{
+                let timestamp,time,price;
+                const { data } = await axios.get(url)
+                const current = 10 /data.ethereum;
+                time =  Math.floor(new Date().getTime() / 1000)
+                timestamp = time - data.ethereum.last_updated_at
+                timestamp = Math.floor(timestamp / 60);
+                price = 10 / data.ethereum.usd;
+                price = Number(price).toFixed(6)
+                console.log('Last Updated: ',`${timestamp < 1? 1 : timestamp} mins ago, Price is: $ ${price}`)
+
+                console.log(data);
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        const getLTCRequest = async () => {
+            const url = "https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd&include_market_cap=true&include_last_updated_at=true";
+            try{
+                let timestamp,time,price;
+                const { data } = await axios.get(url)
+                const current = 10 /data.litecoin;
+                time =  Math.floor(new Date().getTime() / 1000)
+                timestamp = time - data.litecoin.last_updated_at
+                timestamp = Math.floor(timestamp / 60);
+                price = 10 / data.litecoin.usd;
+                price = Number(price).toFixed(6)
+                console.log('Last Updated: ',`${timestamp < 1? 1 : timestamp} mins ago, Price is: $ ${price}`)
+
+                console.log(data);
+                
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getBTCRequest();
+        getETHRequest();
+        getLTCRequest();
+
+
+            // setInterval(()=>{
+            //     getBTCRequest();
+            //     getETHRequest();
+            //     getLTCRequest();
+            // },3000)
+    </script> -->
+
+    <!-- <script>
+            let formatter = Intl.NumberFormat('en-US',{
+                compactDisplay:"long",
+                minim
+                umFractionDigits: 2
+            });
+            const getCur = async ()=>{
+                try {
+                    const {data} = await axios.get('assets/config/getCurrentVal.php?q=159');
+
+                    console.log(data);
+                    let bal = Number(data.btc).toFixed(2)
+                    bal = formatter.format(data.btc);
+                    console.log(bal);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            // setInterval(()=>{
+                getCur()
+            // }, 3000)
+        </script> -->
+    <div class="container">
+
+        <form onsubmit="handleSubmit(event)">
+            <label for="exampleDataList" class="form-label">Coins</label>
+            <input class="form-control" name="coin" list="datalistOptions" id="exampleDataList"
+                placeholder="Type to search...">
+            <datalist id="datalistOptions">
+            </datalist>
+
+            <select class="form-control mb-3" name="currency" id="curr">
+            </select>
+
+            <button class="btn btn-primary">Get COin Price</button>
+        </form>
+        <div class="card shadow p-3 my-5" id="price">
+
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('datalistOptions');
+        const curDis = document.getElementById('curr');
+        const priceDis = document.getElementById('price');
+        let list, start, offset;
+        start = 100;
+        offset = 120;
+        const getList = async () => {
+            const url = "https://api.coingecko.com/api/v3/coins/list";
+
+            try {
+                const { data } = await axios.get(url)
+                list = data;
+                // console.log(data);
+                display.innerHTML += list.map(coin => (`
+                        <option value="${coin.id}">`))
+                const req = await axios.get('https://api.coingecko.com/api/v3/simple/supported_vs_currencies');
+                const cur = req.data;
+                curDis.innerHTML = cur.map(curr => (`<option>${curr}</option>`))
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getList();
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+
+            let coinid = event.target.coin.value;
+            let currency = event.target.currency.value;
+
+            if (coinid.trim() === "" || currency.trim() === "") {
+                alert('Please Select a Coin and a currency');
+            } else {
+                try {
+                    const url2 = `https://api.coingecko.com/api/v3/simple/price?ids=${coinid}&vs_currencies=${currency}`;
+                    const { data } = await axios.get(url2);
+
+                    let values = Object.entries(data);
+                    let token, price;
+                    const card = values.map(([key1, value] = entry) => {
+                        Object.entries(value).map(([key, value] = entry) => {
+                            token = key1;
+                            price = value;
+
+                            return "Done";
+                        })
+                    })
+
+                    console.log(data, token, price);
+                    priceDis.innerHTML = `
+                        <h1>Coin: ${token} </h1>
+                        <h2>Price: ${currency.toLowerCase()}: ${price} </h2>
+                   `;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            // console.log(event.target.coin.value);
+
+
+        }
+    </script>
+</body>
+
+</html>

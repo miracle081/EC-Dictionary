@@ -27,14 +27,18 @@ export function FileUpload({ navigation }) {
     const uploadImage = async () => {
         // setUploading(true);
         if (image == null) return;
-        
-        const imageRef = ref(storage,`images/kjaiujbiusd`);
-        uploadBytes(imageRef,image).then(()=>{
-            alert('image uploaded');
-            // setImage(null);
-        })
+
+        const imageRef = ref(storage, image);
+        uploadBytes(imageRef, image)
+            .then(() => {
+                alert('image uploaded');
+                // setImage(null);
+            })
+            .catch((error) => {
+                alert(error)
+            })
     };
-    
+
 
     return (
         <View style={styles.container}>
@@ -51,18 +55,18 @@ export function FileUpload({ navigation }) {
                 Select Image
             </Button>
             {
-                image && <Image source={{ uri: image }} style={{ width: 200, height: 200, marginTop:20, borderRadius:500 }} />
+                image && <Image source={{ uri: image }} style={{ width: 200, height: 200, marginTop: 20, borderRadius: 500 }} />
             }
             <Button
                 icon={{ uri: 'https://cdn-icons-png.flaticon.com/128/151/151773.png' }}
                 mode='contained'
-                style={{marginTop:20}}
-                onPress={uploadImage} 
-                
+                style={{ marginTop: 20 }}
+                onPress={uploadImage}
+
             >
                 Upload Image
             </Button>
-            
+
         </View>
     );
 }
